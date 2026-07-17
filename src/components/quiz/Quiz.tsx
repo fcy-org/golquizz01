@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, Sparkles, Truck, CreditCard, Tag } from "lucide-react";
+import { ShoppingBag, Sparkles, MapPin, CreditCard, Tag } from "lucide-react";
 import ProgressBar from "./ProgressBar";
 import OptionButton from "./OptionButton";
 import QuizButton from "./QuizButton";
@@ -25,7 +25,6 @@ const slideVariants = {
 
 type Answers = {
   tipoLoja: string;
-  tipoLojaOutro: string;
   investimentoMercadoria: string;
   estoqueParado: string;
   areaMelhorar: string;
@@ -296,7 +295,6 @@ const Quiz = () => {
   const [step, setStep] = useState(1);
   const [answers, setAnswers] = useState<Answers>({
     tipoLoja: "",
-    tipoLojaOutro: "",
     investimentoMercadoria: "",
     estoqueParado: "",
     areaMelhorar: "",
@@ -436,8 +434,8 @@ const Quiz = () => {
             <img src={logo} alt="Gol Distribuidora" className="h-24 w-auto" />
 
             <h1 className="text-2xl md:text-3xl font-extrabold text-foreground leading-tight w-full max-w-md">
-              Sua loja tem o perfil para ser{" "}
-              <span className="text-primary">parceira Gol Distribuidora?</span>
+              Seu Mercado tem o perfil para ser{" "}
+              <span className="text-primary">parceiro Gol Distribuidora?</span>
             </h1>
 
             <p className="text-muted-foreground text-base md:text-lg w-full max-w-md">
@@ -448,7 +446,7 @@ const Quiz = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-semibold text-primary text-center w-full max-w-md">
               <span className="rounded-lg bg-primary/10 px-3 py-2">💳 Boleto a prazo</span>
-              <span className="rounded-lg bg-primary/10 px-3 py-2">🚚 Frete grátis acima de R$300</span>
+              <span className="rounded-lg bg-primary/10 px-3 py-2">🚚 Atendimento PI e MA</span>
               <span className="rounded-lg bg-primary/10 px-3 py-2">🏷️ Preço de atacado</span>
             </div>
 
@@ -473,11 +471,11 @@ const Quiz = () => {
             <div className="w-full max-w-md flex flex-col gap-3 text-left">
               <div className="flex items-center gap-3 rounded-xl border border-border bg-card p-4">
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                  <Truck className="w-5 h-5 text-primary" />
+                  <MapPin className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <p className="font-bold text-sm text-foreground">Pedido mínimo de R$300</p>
-                  <p className="text-xs text-muted-foreground">Compre a partir de R$300 e ganhe frete grátis</p>
+                  <p className="font-bold text-sm text-foreground">PI e MA</p>
+                  <p className="text-xs text-muted-foreground">Atendemos todo Piauí e Maranhão</p>
                 </div>
               </div>
 
@@ -519,56 +517,20 @@ const Quiz = () => {
             question="Qual tipo de loja você tem?"
           >
             {[
-              "Loja de calçados",
-              "Bazar / Loja de variedades",
-              "Mercadinho / Mercearia",
-              "Loja multimarcas",
-              "Outro",
+              "Supermercado",
+              "Mercado",
+              "Loja de Calçados",
             ].map((opt) => (
               <OptionButton
                 key={opt}
                 label={opt}
-                selected={
-                  answers.tipoLoja === opt ||
-                  (opt === "Outro" && Boolean(answers.tipoLojaOutro))
-                }
+                selected={answers.tipoLoja === opt}
                 onClick={() => {
-                  if (opt === "Outro") {
-                    setAnswer("tipoLoja", opt);
-                    return;
-                  }
-
-                  setAnswers((prev) => ({
-                    ...prev,
-                    tipoLoja: opt,
-                    tipoLojaOutro: "",
-                  }));
+                  setAnswer("tipoLoja", opt);
                   setTimeout(next, 350);
                 }}
               />
             ))}
-
-            {(answers.tipoLoja === "Outro" || answers.tipoLojaOutro) && (
-              <>
-                <QuizInput
-                  value={answers.tipoLojaOutro}
-                  onChange={(v) => setAnswer("tipoLojaOutro", v)}
-                  placeholder="Digite o tipo de loja"
-                />
-
-                <div className="mt-2">
-                  <QuizButton
-                    onClick={() => {
-                      setAnswer("tipoLoja", answers.tipoLojaOutro.trim());
-                      setTimeout(next, 150);
-                    }}
-                    disabled={!answers.tipoLojaOutro.trim()}
-                  >
-                    Continuar
-                  </QuizButton>
-                </div>
-              </>
-            )}
           </QuestionScreen>
         );
 
@@ -798,7 +760,7 @@ const Quiz = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-semibold text-primary text-center">
               <span className="rounded-lg bg-primary/10 px-3 py-2">Boleto a prazo</span>
-              <span className="rounded-lg bg-primary/10 px-3 py-2">Frete grátis acima de R$300</span>
+              <span className="rounded-lg bg-primary/10 px-3 py-2">Atendimento Humanizado no WhatsApp</span>
               <span className="rounded-lg bg-primary/10 px-3 py-2">Mix de Calçados e Sapatos</span>
             </div>
 
