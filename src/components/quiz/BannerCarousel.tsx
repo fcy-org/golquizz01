@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import bannerVizzano from "../assets/banners/banner-vizzano.jpg";
 import bannerEsportivo from "../assets/banners/banner-esportivo.jpg";
 import bannerConforto from "../assets/banners/banner-conforto.jpg";
@@ -50,14 +49,6 @@ const BannerCarousel = ({ variant = "card" }: BannerCarouselProps) => {
     return () => window.clearTimeout(timeout);
   }, [index, isPageVisible, isPaused, shouldReduceMotion]);
 
-  const showPrevious = () => {
-    setIndex((current) => (current - 1 + banners.length) % banners.length);
-  };
-
-  const showNext = () => {
-    setIndex((current) => (current + 1) % banners.length);
-  };
-
   const slide = (
     <AnimatePresence initial={false}>
       <motion.div
@@ -84,50 +75,6 @@ const BannerCarousel = ({ variant = "card" }: BannerCarouselProps) => {
     </AnimatePresence>
   );
 
-  const controls = (
-    <div
-      className="flex h-11 items-center justify-center gap-1 bg-background"
-      role="group"
-      aria-label="Controles dos banners"
-    >
-      <button
-        type="button"
-        onClick={showPrevious}
-        aria-label="Banner anterior"
-        className="flex h-11 w-11 items-center justify-center rounded-full text-primary transition-colors hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-      >
-        <ChevronLeft className="h-5 w-5" aria-hidden="true" />
-      </button>
-
-      {banners.map((banner, bannerIndex) => (
-        <button
-          key={banner.name}
-          type="button"
-          onClick={() => setIndex(bannerIndex)}
-          aria-label={`Ver banner ${banner.name}`}
-          aria-current={bannerIndex === index ? "true" : undefined}
-          className="flex h-11 w-11 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-        >
-          <span
-            className={`h-1.5 rounded-full transition-all ${
-              bannerIndex === index ? "w-6 bg-primary" : "w-1.5 bg-primary/30"
-            }`}
-            aria-hidden="true"
-          />
-        </button>
-      ))}
-
-      <button
-        type="button"
-        onClick={showNext}
-        aria-label="Próximo banner"
-        className="flex h-11 w-11 items-center justify-center rounded-full text-primary transition-colors hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-      >
-        <ChevronRight className="h-5 w-5" aria-hidden="true" />
-      </button>
-    </div>
-  );
-
   const pauseHandlers = {
     onMouseEnter: () => setIsPaused(true),
     onMouseLeave: () => setIsPaused(false),
@@ -146,7 +93,6 @@ const BannerCarousel = ({ variant = "card" }: BannerCarouselProps) => {
         <div className="relative h-[clamp(8.25rem,34.5vw,20rem)] w-full overflow-hidden">
           {slide}
         </div>
-        {controls}
       </section>
     );
   }
@@ -161,7 +107,6 @@ const BannerCarousel = ({ variant = "card" }: BannerCarouselProps) => {
       <div className="relative w-full aspect-[2.9/1] overflow-hidden rounded-xl border border-border bg-muted">
         {slide}
       </div>
-      <div className="mt-1 overflow-hidden rounded-lg border border-border/70">{controls}</div>
     </section>
   );
 };
